@@ -1,0 +1,101 @@
+import { useState } from "react";
+import { useParams } from "react-router-dom";
+import type { AspectRatio, IThumbnail, ThumbnailStyle } from "../assets/assets";
+import SoftBackDrop from "../components/SoftBackDrop";
+import AspectRatioSelector from "../components/AspectRatioSelector";
+
+import { colorSchemes } from "./../assets/assets";
+
+export default function Generation() {
+  const { id } = useParams();
+
+  const [title, setTitle] = useState("");
+  const [additionalDetails, setAdditionalDetails] = useState("");
+  const [thumbnail, setThumbnail] = useState<IThumbnail | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const [aspectRatio, setAspectRatio] = useState<AspectRatio>("16:9");
+  const [colorSchemeId, setColorSchemeId] = useState<string>(
+    colorSchemes[0].id
+  );
+  const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
+
+  const [stleDropdownOpen, setStyleDropdownOpen] = useState(false);
+
+  return (
+    <>
+      <SoftBackDrop />
+      <div className="pt-24 min-h-screen">
+        <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 lg-pb-8">
+          <div className="grid lg: grid-cols-[400px_1fr] gap-8">
+            {/* left panel */}
+            <div className={`space-y-6 ${id && "pointer-events-none"}`}>
+              <div className="p-6 rounded-2xl bg-white/8 border border-white/12 shadow-xl space-y-6">
+                <div>
+                  <h2 className="text-xl font-bold text-zinc-100 mb-1">
+                    Create Your Thumbnail
+                  </h2>
+                  <p className="text-sm text-zinc-400">
+                    Describe your vision for the thumbnail. Be specific about
+                    the style, colors, and elements you want to include.
+                  </p>
+                </div>
+                <div className="space-y-5">
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium">
+                      Title or Topic
+                    </label>
+                    <input
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      maxLength={100}
+                      placeholder="e.g., 10 Tips for Better Sleep"
+                      className=" w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:ring-2 outline-none 
+                      focus:ring-indigo-400  "
+                    />
+                    <div className="text-xs text-zinc-500 text-right mt-1">
+                      <span>{title.length}/100</span>
+                    </div>
+                  </div>
+                  {/* AspectRatioSelector */}
+                  <AspectRatioSelector
+                    value={aspectRatio}
+                    onChange={setAspectRatio}
+                  />
+                  {/* StyleSelector */}
+                  {/* ColorSchemeSelector */}
+
+                  {/* Details */}
+                  <div className="space-y-2">
+                    <label>
+                      Additional Prompt{" "}
+                      <span className="text-xs text-zinc-400">(optional)</span>
+                      <textarea
+                        value={additionalDetails}
+                        onChange={(e) => setAdditionalDetails(e.target.value)}
+                        rows={4}
+                        placeholder=""
+                        className=" w-full px-4 py-3 rounded-lg border border-white/12 bg-black/20 text-zinc-100 placeholder:text-zinc-400 focus:ring-2 outline-none 
+                      focus:ring-indigo-400  resize-none "
+                      ></textarea>
+                    </label>
+                  </div>
+                </div>
+                {/* btn */}
+                {!id && (
+                  <button className="w-full h-11 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition  text-[15px] ">
+                    {loading ? "Generating..." : "Generate Thumbnail"}
+                  </button>
+                )}
+                <button></button>
+              </div>
+            </div>
+            {/* right panel */}
+            <div></div>
+          </div>
+        </main>
+      </div>
+    </>
+  );
+}
