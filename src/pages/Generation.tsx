@@ -5,6 +5,7 @@ import SoftBackDrop from "../components/SoftBackDrop";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 
 import { colorSchemes } from "./../assets/assets";
+import StyleSelector from "../components/StyleSelector";
 
 export default function Generation() {
   const { id } = useParams();
@@ -64,6 +65,12 @@ export default function Generation() {
                     onChange={setAspectRatio}
                   />
                   {/* StyleSelector */}
+                  <StyleSelector
+                    value={style}
+                    onChange={setStyle}
+                    isOpen={stleDropdownOpen}
+                    setIsOpen={setStyleDropdownOpen}
+                  />
                   {/* ColorSchemeSelector */}
 
                   {/* Details */}

@@ -10,18 +10,18 @@ import YTPreview from "./pages/YTPreview";
 import Login from "./components/login";
 
 export default function App() {
-    return (
-        <>
-            <LenisScroll />
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/generate" element={<Generation />} />
-                <Route path="/my-generations" element={<MyGeneration />} />
-                <Route path="/preview" element={<YTPreview />} />
-                <Route path="/login" element={<Login />} />
-            </Routes>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <LenisScroll />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/generate" element={<Generation />} />
+        <Route path="/my-generations" element={<MyGeneration />} />
+        <Route path="/preview" element={<YTPreview />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+      {/* <Footer /> */}
+    </>
+  );
 }
