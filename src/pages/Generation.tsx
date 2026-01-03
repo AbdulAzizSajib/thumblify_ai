@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { AspectRatio, IThumbnail, ThumbnailStyle } from "../assets/assets";
 import SoftBackDrop from "../components/SoftBackDrop";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 
-import { colorSchemes } from "./../assets/assets";
+import { colorSchemes, dummyThumbnails } from "./../assets/assets";
 import StyleSelector from "../components/StyleSelector";
+import ColorSchemeSelector from "../components/ColorSchemeSelector";
+import PreviewPanel from "../components/PreviewPanel";
 
 export default function Generation() {
   const { id } = useParams();
+
+  console.log(id);
 
   const [title, setTitle] = useState("");
   const [additionalDetails, setAdditionalDetails] = useState("");
@@ -22,6 +26,31 @@ export default function Generation() {
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
 
   const [stleDropdownOpen, setStyleDropdownOpen] = useState(false);
+
+  const handleGenerate = async () => {
+    // Generation logic here
+  };
+  const fetchThumbnail = async () => {
+    // Generation logic here
+    if (id) {
+      const thumbnail: any = dummyThumbnails.find((t) => t._id === id);
+      console.log("thumbnail---------", thumbnail);
+
+      setThumbnail(thumbnail);
+      setAdditionalDetails(thumbnail.user_prompt);
+      setTitle(thumbnail.title);
+      setColorSchemeId(thumbnail.color_scheme);
+      setAspectRatio(thumbnail.aspect_ratio);
+      setStyle(thumbnail.style);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchThumbnail();
+    }
+  }, [id]);
 
   return (
     <>
@@ -72,6 +101,10 @@ export default function Generation() {
                     setIsOpen={setStyleDropdownOpen}
                   />
                   {/* ColorSchemeSelector */}
+                  <ColorSchemeSelector
+                    value={colorSchemeId}
+                    onChange={setColorSchemeId}
+                  />
 
                   {/* Details */}
                   <div className="space-y-2">
@@ -91,7 +124,10 @@ export default function Generation() {
                 </div>
                 {/* btn */}
                 {!id && (
-                  <button className="w-full h-11 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition  text-[15px] ">
+                  <button
+                    onClick={handleGenerate}
+                    className="w-full h-11 rounded-full text-white bg-indigo-600 hover:bg-indigo-500 transition  text-[15px] "
+                  >
                     {loading ? "Generating..." : "Generate Thumbnail"}
                   </button>
                 )}
@@ -99,7 +135,18 @@ export default function Generation() {
               </div>
             </div>
             {/* right panel */}
-            <div></div>
+            <div>
+              <div className="p-6 rounded-2xl bg-white/8 border border-white/10 shadow-xl">
+                <h2 className="text-lg font-semibold text-zinc-100 mb-4">
+                  Preview
+                </h2>
+                <PreviewPanel
+                  thumbnail={thumbnail}
+                  isLoading={loading}
+                  aspectRatio={aspectRatio}
+                />
+              </div>
+            </div>
           </div>
         </main>
       </div>
